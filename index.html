@@ -82,6 +82,7 @@
       <tr>
         <th>Head of Unit</th>
         <th>Head of Worksheet</th>
+        <th>Submission date</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -98,6 +99,7 @@
       <tr>
         <th>Head of Unit</th>
         <th>Head of Worksheet</th>
+        <th>Submission Date</th>th>
         <th>Action</th>
       </tr>
     </thead>
@@ -112,9 +114,30 @@
 
     // Default structured tasks
     const DEFAULT_TASKS = [
+      { unit: "Unit 4", worksheet: "Information Governance", submission: "30/09/24" },
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation" },
+      { unit: "Unit 3", worksheet: "Worksheet C" },
+            { unit: "Unit 4", worksheet: "Information Governance" },
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation" },
+      { unit: "Unit 3", worksheet: "Worksheet C" },
       { unit: "Unit 4", worksheet: "Information Governance" },
-      { unit: "Unit 2", worksheet: "Worksheet B" },
-      { unit: "Unit 3", worksheet: "Worksheet C" }
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation" },
+      { unit: "Unit 3", worksheet: "Worksheet C" }, 
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation" },
+      { unit: "Unit 3", worksheet: "Worksheet C" },
+      { unit: "Unit 4", worksheet: "Information Governance" },
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation" },
+      { unit: "Unit 3", worksheet: "Worksheet C" }, 
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation" },
+      { unit: "Unit 3", worksheet: "Worksheet C" },
+      { unit: "Unit 4", worksheet: "Information Governance" },
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation" },
+      { unit: "Unit 3", worksheet: "Worksheet C" }, 
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation" },
+      { unit: "Unit 3", worksheet: "Worksheet C" },
+      { unit: "Unit 4", worksheet: "Information Governance" },
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation" },
+      { unit: "Unit 3", worksheet: "Worksheet C" }, 
     ];
 
     // Initialize on load
@@ -149,7 +172,8 @@
         const row = taskTable.insertRow();
         row.insertCell(0).textContent = task.unit;
         row.insertCell(1).textContent = task.worksheet;
-        row.insertCell(2).innerHTML = `<button class="task-btn" onclick="markComplete(${index})">✅ Completed</button>`;
+        row.insertCell(1).textContent = task.submission;
+        row.insertCell(3).innerHTML = `<button class="task-btn" onclick="markComplete(${index})">✅ Completed</button>`;
       });
 
       // Render completed tasks
@@ -158,7 +182,8 @@
         row.classList.add("completed-row");
         row.insertCell(0).textContent = task.unit;
         row.insertCell(1).textContent = task.worksheet;
-        row.insertCell(2).innerHTML = `<button class="task-btn incomplete-btn" onclick="markIncomplete(${index})">↩ Uncomplete</button>`;
+        row.insertCell(2).textContent = task.submission;
+        row.insertCell(3).innerHTML = `<button class="task-btn incomplete-btn" onclick="markIncomplete(${index})">↩ Uncomplete</button>`;
       });
     }
 

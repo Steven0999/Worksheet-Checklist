@@ -2,24 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Persistent Interactive Checklist</title>
+  <title>Checklist (Simplified View)</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 40px;
-      background-color: black;
+      background-color: #f4f4f4;
     }
 
     h1, h2 {
       text-align: center;
-      color:orange;
     }
 
     table {
       width: 80%;
       margin: 20px auto;
       border-collapse: collapse;
-      background-color: grey;
+      background-color: white;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
@@ -27,7 +26,6 @@
       padding: 12px 15px;
       border: 1px solid #ccc;
       text-align: left;
-      color: orange;
     }
 
     th {
@@ -36,47 +34,43 @@
     }
 
     tr:hover {
-      background-color: grey;
+      background-color: #f9f9f9;
     }
 
     button {
-      padding: 6px 12px;
+      float: right;
+      padding: 6px 10px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 12px;
+      background-color: #28a745;
       color: white;
     }
 
-    .complete-btn {
-      background-color: #28a745;
+    .completed-row {
+      text-decoration: line-through;
+      color: gray;
     }
 
     .incomplete-btn {
       background-color: #dc3545;
     }
-
-    .completed {
-      text-decoration: line-through;
-      color: gray;
-      background-color:white;
-    }
   </style>
 </head>
 <body>
 
-  <h1>📋 Interactive Checklist</h1>
+  <h1>📋 Simplified Checklist</h1>
 
   <!-- Uncompleted Tasks Table -->
   <table id="taskTable">
     <thead>
       <tr>
-        <th>Task</th>
-        <th>Complete?</th>
-        <th>Action</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
-      <!-- Uncompleted tasks will be loaded here -->
+      <!-- Uncompleted tasks will go here -->
     </tbody>
   </table>
 
@@ -86,22 +80,18 @@
   <table id="completedTable">
     <thead>
       <tr>
-        <th>Task</th>
-        <th>Status</th>
-        <th>Action</th>
+        <th>Description</th>
       </tr>
     </thead>
     <tbody>
-      <!-- Completed tasks will be loaded here -->
+      <!-- Completed tasks will go here -->
     </tbody>
   </table>
 
   <script>
-    // Local Storage Keys
     const UNCOMPLETED_KEY = 'taskList_uncompleted';
     const COMPLETED_KEY = 'taskList_completed';
 
-    // Load tasks on page load
     window.onload = function() {
       loadTasks();
     };
@@ -119,21 +109,16 @@
       // Render uncompleted tasks
       uncompleted.forEach((task, index) => {
         const row = taskTable.insertRow();
-        row.innerHTML = `
-          <td>${task}</td>
-          <td><input type="checkbox" class="taskCheckbox"></td>
-          <td><button class="complete-btn" onclick="markComplete(${index})">Mark as Complete</button></td>
-        `;
+        const cell = row.insertCell(0);
+        cell.innerHTML = `${task} <button onclick="markComplete(${index})">✔</button>`;
       });
 
       // Render completed tasks
       completed.forEach((task, index) => {
         const row = completedTable.insertRow();
-        row.innerHTML = `
-          <td class="completed">${task}</td>
-          <td><strong>Completed</strong></td>
-          <td><button class="incomplete-btn" onclick="markIncomplete(${index})">Mark as Incomplete</button></td>
-        `;
+        const cell = row.insertCell(0);
+        cell.classList.add('completed-row');
+        cell.innerHTML = `${task} <button class="incomplete-btn" onclick="markIncomplete(${index})">↩</button>`;
       });
     }
 
@@ -161,9 +146,12 @@
       loadTasks();
     }
 
-    // Optional: Add an example task if nothing exists
+    // Optional: Add some default tasks if none are saved
     if (!localStorage.getItem(UNCOMPLETED_KEY) && !localStorage.getItem(COMPLETED_KEY)) {
-      localStorage.setItem(UNCOMPLETED_KEY, JSON.stringify(["Example Task 1"]));
+      localStorage.setItem(UNCOMPLETED_KEY, JSON.stringify([
+        "Write proposal",
+        "Design logo"
+      ]));
     }
   </script>
 

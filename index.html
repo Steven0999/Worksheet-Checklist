@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Checklist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f0f4f8;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #007acc;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    button {
+      padding: 6px 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>My Interactive Checklist</h1>
+
+  <!-- Active Tasks Table -->
+  <table id="taskTable">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Complete?</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Example Task 1</td>
+        <td><input type="checkbox" class="taskCheckbox"></td>
+        <td><button onclick="markComplete(this)">Mark as Complete</button></td>
+      </tr>
+      <!-- Add more rows here -->
+    </tbody>
+  </table>
+
+  <h2 class="section-title">✅ Completed Tasks</h2>
+
+  <!-- Completed Tasks Table -->
+  <table id="completedTable">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Completed tasks will appear here -->
+    </tbody>
+  </table>
+
+  <script>
+    function markComplete(button) {
+      const row = button.closest('tr');
+      const checkbox = row.querySelector('.taskCheckbox');
+      const taskName = row.cells[0].textContent;
+
+      if (!checkbox.checked) {
+        alert('Please check the task as complete first.');
+        return;
+      }
+
+      // Add to completed table
+      const completedTable = document.getElementById('completedTable').querySelector('tbody');
+      const newRow = completedTable.insertRow();
+      const taskCell = newRow.insertCell(0);
+      const statusCell = newRow.insertCell(1);
+
+      taskCell.textContent = taskName;
+      taskCell.classList.add('completed');
+      statusCell.innerHTML = '<strong>Completed</strong>';
+
+      // Remove from active table
+      row.remove();
+    }
+  </script>
+
+</body>
+</html>

@@ -115,9 +115,9 @@
     // Default structured tasks
     const DEFAULT_TASKS = [
       { unit: "Unit 4", worksheet: "Information Governance", submission: "30/09/24" },
-      { unit: "Unit 4", worksheet: "Information Governance", submission: "30/09/24" },
-      { unit: "Unit 4", worksheet: "Information Governance", submission: "30/09/24" },
-      { unit: "Unit 4", worksheet: "Information Governance", submission: "30/09/24" },
+      { unit: "Unit 5", worksheet: "Vehicle Familiarisation", submission: "30/09/24" },
+      { unit: "Unit 1", worksheet: "CPD Mind Map", submission: "30/09/24" },
+      { unit: "Unit 1", worksheet: "Prof Worksheet", submission: "30/09/24" },
       { unit: "Unit 4", worksheet: "Information Governance", submission: "30/09/24" },
       { unit: "Unit 4", worksheet: "Information Governance", submission: "30/09/24" },
       { unit: "Unit 4", worksheet: "Information Governance", submission: "30/09/24" },
@@ -172,7 +172,7 @@
         const row = taskTable.insertRow();
         row.insertCell(0).textContent = task.unit;
         row.insertCell(1).textContent = task.worksheet;
-        row.insertCell(1).textContent = task.submission;
+        row.insertCell(2).textContent = task.submission;
         row.insertCell(3).innerHTML = `<button class="task-btn" onclick="markComplete(${index})">✅ Completed</button>`;
       });
 

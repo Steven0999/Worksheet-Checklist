@@ -2,24 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Checklist (Simplified View)</title>
+  <title>Checklist with Units and Worksheets</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 40px;
-      background-color: black;
+      background-color: #f4f4f4;
     }
 
     h1, h2 {
       text-align: center;
-      color:orange;
+    }
+
+    #resetButton {
+      display: block;
+      margin: 10px auto 30px auto;
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff4136;
+      color: white;
+      cursor: pointer;
     }
 
     table {
-      width: 80%;
+      width: 90%;
       margin: 20px auto;
       border-collapse: collapse;
-      background-color: grey;
+      background-color: white;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
@@ -27,7 +38,6 @@
       padding: 12px 15px;
       border: 1px solid #ccc;
       text-align: left;
-      color:orange;
     }
 
     th {
@@ -39,8 +49,7 @@
       background-color: #f9f9f9;
     }
 
-    button {
-      float: right;
+    button.task-btn {
       padding: 6px 10px;
       border: none;
       border-radius: 4px;
@@ -50,26 +59,28 @@
       color: white;
     }
 
-    .completed-row {
-      text-decoration: line-through;
-      color: orange;
-    }
-
     .incomplete-btn {
       background-color: #dc3545;
+    }
+
+    .completed-row td {
+      text-decoration: line-through;
+      color: gray;
     }
   </style>
 </head>
 <body>
 
-  <h1>📋 Simplified Checklist</h1>
+  <h1>📋 Unit & Worksheet Checklist</h1>
+  <button id="resetButton">🔄 Reset All Tasks</button>
 
   <!-- Uncompleted Tasks Table -->
   <table id="taskTable">
     <thead>
       <tr>
-        <th>Unit</th>
-        <th>Description</th>
+        <th>Head of Unit</th>
+        <th>Head of Worksheet</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -83,8 +94,9 @@
   <table id="completedTable">
     <thead>
       <tr>
-        <th>Unit</th>
-        <th>Description</th>
+        <th>Head of Unit</th>
+        <th>Head of Worksheet</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -96,9 +108,29 @@
     const UNCOMPLETED_KEY = 'taskList_uncompleted';
     const COMPLETED_KEY = 'taskList_completed';
 
-    window.onload = function() {
-      loadTasks();
+    // Default structured tasks
+    const DEFAULT_TASKS = [
+      { unit: "Unit 1", worksheet: "Worksheet A" },
+      { unit: "Unit 2", worksheet: "Worksheet B" },
+      { unit: "Unit 3", worksheet: "Worksheet C" }
+    ];
+
+    // Initialize on load
+    window.onload = function () {
+      if (!localStorage.getItem(UNCOMPLETED_KEY) && !localStorage.getItem(COMPLETED_KEY)) {
+        resetTasks();
+      } else {
+        loadTasks();
+      }
     };
+
+    document.getElementById('resetButton').addEventListener('click', resetTasks);
+
+    function resetTasks() {
+      localStorage.setItem(UNCOMPLETED_KEY, JSON.stringify(DEFAULT_TASKS));
+      localStorage.setItem(COMPLETED_KEY, JSON.stringify([]));
+      loadTasks();
+    }
 
     function loadTasks() {
       const uncompleted = JSON.parse(localStorage.getItem(UNCOMPLETED_KEY)) || [];
@@ -113,16 +145,18 @@
       // Render uncompleted tasks
       uncompleted.forEach((task, index) => {
         const row = taskTable.insertRow();
-        const cell = row.insertCell(0);
-        cell.innerHTML = `${task} <button onclick="markComplete(${index})">✔</button>`;
+        row.insertCell(0).textContent = task.unit;
+        row.insertCell(1).textContent = task.worksheet;
+        row.insertCell(2).innerHTML = `<button class="task-btn" onclick="markComplete(${index})">✅ Completed</button>`;
       });
 
       // Render completed tasks
       completed.forEach((task, index) => {
         const row = completedTable.insertRow();
-        const cell = row.insertCell(0);
-        cell.classList.add('completed-row');
-        cell.innerHTML = `${task} <button class="incomplete-btn" onclick="markIncomplete(${index})">↩</button>`;
+        row.classList.add("completed-row");
+        row.insertCell(0).textContent = task.unit;
+        row.insertCell(1).textContent = task.worksheet;
+        row.insertCell(2).innerHTML = `<button class="task-btn incomplete-btn" onclick="markIncomplete(${index})">↩ Uncomplete</button>`;
       });
     }
 
@@ -148,14 +182,6 @@
       localStorage.setItem(UNCOMPLETED_KEY, JSON.stringify(uncompleted));
       localStorage.setItem(COMPLETED_KEY, JSON.stringify(completed));
       loadTasks();
-    }
-
-    // Optional: Add some default tasks if none are saved
-    if (!localStorage.getItem(UNCOMPLETED_KEY) && !localStorage.getItem(COMPLETED_KEY)) {
-      localStorage.setItem(UNCOMPLETED_KEY, JSON.stringify([
-        "Write proposal",
-        "Design logo"
-      ]));
     }
   </script>
 
